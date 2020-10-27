@@ -10,23 +10,21 @@ module.exports = {
     contentBase: './dist',
   },
 
-  plugins: [
-    new HtmlWebpackPlugin({ template: './src/index.html' }),
-  ],
+  plugins: [new HtmlWebpackPlugin({template: './src/index.html'})],
 
   module: {
     rules: [
       /*
-      * For using with just CSS
-      * */
+       * For using with just CSS
+       * */
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
 
       /*
-      * And for use with SASS pre-processor (optionally)
-      * */
+       * And for use with SASS pre-processor (optionally)
+       * */
       {
         test: /\.s[ac]ss$/i,
         use: ['style-loader', 'css-loader', 'sass-loader'],
@@ -41,7 +39,7 @@ module.exports = {
         options: {
           name(resourcePath, resourceQuery) {
             if (process.env.NODE_ENV === 'development') {
-              return "[path][name].[ext]";
+              return '[path][name].[ext]';
             }
 
             return '[contenthash].[ext]';
@@ -49,10 +47,17 @@ module.exports = {
           outputPath: 'images',
         },
       },
+
+      /* Font loading */
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ['file-loader'],
+      },
+
       {
         test: /\.(html)$/i,
-        use: ['html-loader']
-      }
+        use: ['html-loader'],
+      },
     ],
   },
 

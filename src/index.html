@@ -1,20 +1,80 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Vanilla JS Calculator</title>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Webpack Workflow</title>
-</head>
+  <body>
+    <div class="content-wrapper">
+      <div class="calculator">
+        <div class="calculator__screen">0</div>
+        <div class="calculator__keys">
+          <button
+            data-type="operator"
+            data-operation="plus"
+            class="button button--operator"
+          >
+            &plus;
+          </button>
+          <button
+            data-type="operator"
+            data-operation="minus"
+            class="button button--operator"
+          >
+            &minus;
+          </button>
+          <button
+            data-type="operator"
+            data-operation="times"
+            class="button button--operator"
+          >
+            &times;
+          </button>
+          <button
+            data-type="operator"
+            data-operation="divide"
+            class="button button--operator"
+          >
+            &divide;
+          </button>
 
-<body>
-    <div class="hero">
-        <img src="assets/images/webpack-logo.png" id="logo">
-        <h1>Webpack workflow</h1>
-        <p>A simple webpack boilerplate for HTML/CSS development.</p>
+          <button class="button button--number">7</button>
+          <button class="button button--number">8</button>
+          <button class="button button--number">9</button>
+
+          <button class="button button--number">4</button>
+          <button class="button button--number">5</button>
+          <button class="button button--number">6</button>
+
+          <button class="button button-number">1</button>
+          <button class="button button-number">2</button>
+          <button class="button button-number">3</button>
+
+          <button data-type="comma" class="button button--comma">.</button>
+          <button class="button button--number">0</button>
+          <button
+            data-type="operator"
+            data-operation="clear"
+            class="button button--clear"
+          >
+            C
+          </button>
+
+          <button
+            data-type="operator"
+            data-operation="equals"
+            class="button button--equals"
+          >
+            &equals;
+          </button>
+        </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
