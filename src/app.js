@@ -1,12 +1,15 @@
 import 'normalize.css';
 import './main.scss';
 
-const calculator = document.querySelector('.calculator');
 const calculatorKeys = document.querySelector('.calculator__keys');
 const screen = document.querySelector('.calculator__screen');
 
-// TODO: Refactor code: decouple all possible code
-// TODO: Move state from datasets to object
+const calculatorState = {
+  input: '0',
+  firstNumber: undefined,
+  operator: undefined,
+};
+
 // TODO: Refactor code: move all code to classes?
 calculatorKeys.addEventListener('click', (e) => {
   e.preventDefault();
@@ -23,9 +26,7 @@ calculatorKeys.addEventListener('click', (e) => {
     e.target.dataset.type === 'operator' &&
     e.target.dataset.operation === 'clear'
   ) {
-    screen.innerText = '0';
-    delete calculator.dataset.previousOperator;
-    delete calculator.dataset.firstNumber;
+    clear();
     return;
   }
 
@@ -35,10 +36,7 @@ calculatorKeys.addEventListener('click', (e) => {
     e.target.dataset.operation != 'clear' &&
     e.target.dataset.operation != 'equals'
   ) {
-    calculator.dataset.previousOperator = e.target.dataset.operation;
-    calculator.dataset.firstNumber = screen.innerText;
-    screen.innerText = '0';
-
+    selectOperator(e.target.dataset.operation);
     return;
   }
 
@@ -47,37 +45,81 @@ calculatorKeys.addEventListener('click', (e) => {
     e.target.dataset.type === 'operator' &&
     e.target.dataset.operation === 'equals'
   ) {
-    if (calculator.dataset.previousOperator === undefined) return;
-
-    const secondNumber = screen.innerText;
-
-    let result = '';
-    switch (calculator.dataset.previousOperator) {
-      case 'plus':
-        result = +calculator.dataset.firstNumber + +secondNumber;
-        break;
-      case 'minus':
-        result = +calculator.dataset.firstNumber - +secondNumber;
-        break;
-      case 'times':
-        result = +calculator.dataset.firstNumber * +secondNumber;
-        break;
-      case 'divide':
-        result = +calculator.dataset.firstNumber / +secondNumber;
-        break;
-      default:
-        console.error('Something goes wrong...');
-        break;
-    }
-
-    screen.innerText = result;
-    calculator.dataset.firstNumber = result;
+    calculate();
     return;
   }
 
-  if (screen.innerText === '0') {
-    screen.innerText = e.target.innerText;
-  } else {
-    screen.innerText += e.target.innerText;
-  }
+  numberInput(e.target);
 });
+
+/**
+ * Perform a calculation and re-render.
+ */
+function calculate() {
+  if (calculatorState.operator === undefined) return;
+
+  const secondNumber = +calculatorState.input;
+
+  let result = '';
+  switch (calculatorState.operator) {
+    case 'plus':
+      result = +calculatorState.firstNumber + secondNumber;
+      break;
+    case 'minus':
+      result = +calculatorState.firstNumber - secondNumber;
+      break;
+    case 'times':
+      result = +calculatorState.firstNumber * secondNumber;
+      break;
+    case 'divide':
+      result = +calculatorState.firstNumber / secondNumber;
+      break;
+    default:
+      console.error('Something goes wrong...');
+      break;
+  }
+
+  calculatorState.firstNumber = result;
+  calculatorState.input = calculatorState.firstNumber;
+  render();
+}
+
+/**
+ * @param  { Element } source - button element to get number from
+ */
+function numberInput(source) {
+  if (calculatorState.input === '0') {
+    calculatorState.input = source.innerText;
+  } else {
+    calculatorState.input += source.innerText;
+  }
+
+  render();
+}
+
+/**
+ * @param  { string } operator - operator from data- attribute
+ */
+function selectOperator(operator) {
+  calculatorState.operator = operator;
+  calculatorState.firstNumber = calculatorState.input;
+  calculatorState.input = '0';
+  render();
+}
+
+/**
+ * Assign default values to the state and re-render.
+ */
+function clear() {
+  calculatorState.firstNumber = undefined;
+  calculatorState.operator = undefined;
+  calculatorState.input = '0';
+  render();
+}
+
+/**
+ * Render screen contents depend on state.
+ */
+function render() {
+  screen.innerText = calculatorState.input;
+}
